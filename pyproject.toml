@@ -1,0 +1,29 @@
+[project]
+name = "patentscout"
+version = "0.1.0"
+description = "AI-Powered Patent Research & Prior-Art Search"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "agno",
+    "openai",
+    "faiss-cpu",
+    "sqlalchemy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pre-commit",
+    "pytest"
+]
+
+[tool.setuptools]
+packages = ["agents", "workflows", "tools", "scripts"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
