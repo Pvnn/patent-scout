@@ -1,9 +1,10 @@
-import sys
 import json
 import os
+import sys
 from typing import List
-from pydantic import BaseModel
+
 from openai import OpenAI
+from pydantic import BaseModel
 
 
 # Pydantic schema guarantees the OpenAI Structured Output

@@ -1,9 +1,10 @@
-import sys
 import json
 import os
+import sys
 from typing import List
-from pydantic import BaseModel
+
 from openai import OpenAI
+from pydantic import BaseModel
 
 
 # Define the exact structure required by our skill markdown
