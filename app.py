@@ -1,27 +1,21 @@
-from fastapi.middleware.cors import CORSMiddleware
-from agno.os import AgentOS
-from agno.agent import Agent
-from database import sqlite_db
-
-from pydantic import BaseModel
+from datetime import datetime
 from typing import Optional
 from uuid import uuid4
-from datetime import datetime
 
-# Define a placeholder agent to satisfy AgentOS requirement
-dummy_agent = Agent(
-    name="PatentScout Placeholder Agent",
-    description="Placeholder agent for API bootstrap",
-)
+from agno.os import AgentOS
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+
+from database import sqlite_db
+from workflows.analysis_pipeline import analysis_pipeline
 
 # Initialize AgentOS
 agent_os = AgentOS(
     name="PatentScout API",
     description="AI-Powered Patent Research & Prior-Art Search",
     version="1.0.0",
-    agents=[dummy_agent],
+    workflows=[analysis_pipeline],
     db=sqlite_db,
-    # workflows=[],
 )
 
 # Retrieve FastAPI app instance
