@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class GlobalConfig(BaseSettings):
@@ -11,8 +11,7 @@ class GlobalConfig(BaseSettings):
     RETRY_BACKOFF_FACTOR: float = 2.0  # Base seconds to wait before retry (exponential)
     TIMEOUT_SECONDS: int = 120  # Hard timeout for any subprocess tool
 
-    class Config:
-        env_prefix = "PATENTSCOUT_"
+    model_config = SettingsConfigDict(env_prefix="PATENTSCOUT_")
 
 
 # Global configuration instance

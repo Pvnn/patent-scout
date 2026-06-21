@@ -3,8 +3,11 @@ import os
 import sys
 from typing import List
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
+
+load_dotenv()
 
 
 # Define the exact structure required by our skill markdown
@@ -56,7 +59,7 @@ def main():
             text_format=MatcherResponse,
         )
 
-        result = completion.parsed
+        result = completion.output_parsed
         print(result.model_dump_json())
 
     except Exception as e:

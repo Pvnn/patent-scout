@@ -12,6 +12,7 @@ dependencies = [
     "openai",
     "faiss-cpu",
     "sqlalchemy",
+    "python-dotenv>=1.2.2",
 ]
 
 [project.optional-dependencies]

@@ -3,8 +3,11 @@ import os
 import sys
 from typing import List
 
+from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
+
+load_dotenv()
 
 
 # Pydantic schema guarantees the OpenAI Structured Output
@@ -48,7 +51,7 @@ def main():
             text_format=ConceptSchema,
         )
 
-        result = completion.parsed
+        result = completion.output_parsed
 
         # Print valid JSON to stdout (this becomes the envelope tool_dispatcher parses)
         print(result.model_dump_json())
