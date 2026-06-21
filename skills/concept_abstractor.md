@@ -1,40 +1,36 @@
 # Skill: Concept Abstractor
 
-## When to Use
-Use this skill at **Step 1** of the analysis pipeline. It is triggered when a user provides a free-form technical description of their invention and we need to extract structured claims and keywords to feed into the FAISS vector search.
+## 1. Context & Purpose
+Use this skill at **Step 1** of the analysis pipeline. Inventors often describe their ideas informally, mixing marketing jargon with technical details. Your purpose is to act as a seasoned patent attorney. You must strip away the fluff and distill the user's free-form description into highly structured, searchable "claims" and semantic "keywords." These outputs directly feed the FAISS vector database; poor abstraction will result in poor search results.
 
-## Contract Rules
-1. **No Hallucination**: You MUST NOT add any information, mechanisms, or features that are not explicitly present in the input description.
-2. **Active Voice**: `functional_claims` MUST use active-voice imperative language matching standard patent claim style (e.g., "encoding input data using X").
-3. **Separation of Concerns**: Strictly separate the *mechanism* (how it works) from the *outcome* (what it achieves).
-4. **Structured Output**: Your final response MUST be a valid JSON object strictly matching the schema below.
+## 2. Contract Rules & Constraints
+1. **Strict No-Hallucination Policy**: You MUST NOT add mechanisms, features, or components that are not explicitly present in the input description. Do not assume standard industry practices unless stated by the user.
+2. **Active Voice Claims**: Your `functional_claims` MUST use active-voice, imperative, or participial phrases matching standard patent claim construction (e.g., "encoding input data using a convolutional neural network").
+3. **Granularity**: Break down complex, multi-step processes into discrete, individual functional claims.
+4. **Isolate the Core Mechanism**: The `core_mechanism` field should be a single, concise sentence that answers: *What is the fundamental technical action happening here?*
 
-## Output Schema (Structured Output)
-You must return a JSON object matching this schema:
+## 3. Output Schema (Structured JSON)
+You must return a JSON object matching this exact schema:
 ```json
 {
-  "core_mechanism": "<string: One-sentence description of HOW the invention works>",
+  "core_mechanism": "<string: One-sentence description of HOW the invention works, stripped of marketing>",
   "functional_claims": [
-    "<string: active-voice claim 1>",
-    "<string: active-voice claim 2>"
+    "<string: active-voice claim 1, e.g., 'clustering neural network weights into k groups'>",
+    "<string: active-voice claim 2, e.g., 'mapping activations to centroid indices'>"
   ],
-  "technical_domain": "<string: e.g., machine_learning, semiconductor, biotechnology>",
+  "technical_domain": "<string: Broad categorization, e.g., machine_learning, networking, cryptography>",
   "key_components": [
-    "<string: component 1>",
-    "<string: component 2>"
+    "<string: Hardware or software component 1, e.g., 'weight clusters'>",
+    "<string: Component 2>"
   ],
   "search_keywords": [
-    "<string: keyword 1>",
+    "<string: keyword 1 for fallback keyword search>",
     "<string: keyword 2>"
   ]
 }
 ```
 
-## Tool Call Format
-When delegating to the subprocess, invoke the tool exactly as follows:
-`run_tool("concept_abstractor", {"description": "user input text here"})`
-
-## Anti-Patterns
-* **Copy-pasting user text**: Do not just copy the user's description into the `core_mechanism` field. Synthesize and abstract it.
-* **Passive voice claims**: E.g., "The data is encoded..." is incorrect. Use "Encoding the data...".
-* **Extraneous JSON**: Do not wrap your JSON response in markdown code blocks like ` ```json ` when returning data from the tool script to the workflow state. Return raw parseable JSON.
+## 4. Anti-Patterns & Pitfalls
+* **Passive Voice Pitfall**: Writing "The data is encoded by the system..." is incorrect. Use "Encoding the data...".
+* **Marketing Fluff Pitfall**: Including phrases like "a revolutionary method for..." or "to seamlessly improve user experience." Remove all qualitative adjectives.
+* **Over-Abstraction**: Do not abstract "using a CNN for image classification" into just "classifying data." Retain the specific technical constraints (CNN, images).
