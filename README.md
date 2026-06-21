@@ -20,6 +20,19 @@ If you are new to this project, don't worry! Here is a breakdown of the tools we
 
 ---
 
+## 🧠 The AI Multi-Agent Pipeline
+
+The core intelligence of PatentScout is powered by a multi-agent workflow where specialized AI "Agents" pass data to each other in sequence. This prevents hallucinations and enforces a strict legal tone.
+
+1. **Concept Abstractor**: Receives a raw, unstructured technical idea from the user and extracts structured, patent-like "functional claims" and search keywords.
+2. **Patent Searcher**: Takes those keywords and queries our local FAISS vector database to retrieve the most similar existing patents.
+3. **Infringement Matcher**: Acts as a strict legal analyst. It takes the retrieved patents and the user's abstracted claims, and performs a claim-by-claim structural overlap analysis to generate a risk score (High/Medium/Low).
+4. **Report Drafter**: Takes all the raw findings, scores, and context, and synthesizes it into a beautifully formatted, objective Markdown report that streams back to the user interface.
+
+*These are orchestrated inside `workflows/analysis_pipeline.py`, which manages the state hand-offs.*
+
+---
+
 ## 📂 Project Structure
 
 Here is where everything lives:
