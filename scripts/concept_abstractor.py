@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
 
+import config
+
 load_dotenv()
 
 
@@ -45,7 +47,7 @@ def main():
 
         # Use OpenAI's new Responses API with Pydantic for guaranteed structure
         completion = client.responses.parse(
-            model="gpt-4o",
+            model=config.OPENAI_MODEL,
             instructions="You are an expert patent attorney abstracting technical descriptions.",
             input=prompt,
             text_format=ConceptSchema,

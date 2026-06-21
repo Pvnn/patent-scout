@@ -2,7 +2,9 @@ import json
 from typing import Any, Dict, List
 
 from agno.agent import Agent
+from agno.models.openai import OpenAIChat
 
+from config import config
 from tools.skill_loader import run_skill
 from tools.tool_dispatcher import run_tool
 
@@ -23,6 +25,7 @@ def call_infringement_matcher_subprocess(
 infringement_matcher = Agent(
     name="Infringement Matcher",
     role="Patent Overlap Analysis",
+    model=OpenAIChat(id=config.OPENAI_MODEL, temperature=config.OPENAI_TEMPERATURE),
     description="Evaluates structured claims against candidate patents to determine infringement risk.",
     tools=[run_skill, call_infringement_matcher_subprocess],
     instructions=[

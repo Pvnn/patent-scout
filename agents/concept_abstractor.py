@@ -1,7 +1,9 @@
 import json
 
 from agno.agent import Agent
+from agno.models.openai import OpenAIChat
 
+from config import config
 from tools.skill_loader import run_skill
 from tools.tool_dispatcher import run_tool
 
@@ -19,6 +21,7 @@ def call_concept_abstractor_subprocess(description: str) -> str:
 concept_abstractor = Agent(
     name="Concept Abstractor",
     role="Patent Concept Abstraction",
+    model=OpenAIChat(id=config.OPENAI_MODEL, temperature=config.OPENAI_TEMPERATURE),
     description="Extracts structured claims and keywords from plain-text technical descriptions.",
     tools=[run_skill, call_concept_abstractor_subprocess],
     instructions=[

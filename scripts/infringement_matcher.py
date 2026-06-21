@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
 
+import config
+
 load_dotenv()
 
 
@@ -53,7 +55,7 @@ def main():
         """
 
         completion = client.responses.parse(
-            model="gpt-4o",
+            model=config.OPENAI_MODEL,
             instructions="You are a patent infringement analyst. Evaluate structural overlap objectively.",
             input=prompt,
             text_format=MatcherResponse,

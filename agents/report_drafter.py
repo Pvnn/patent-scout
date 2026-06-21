@@ -1,7 +1,9 @@
 import json
 
 from agno.agent import Agent
+from agno.models.openai import OpenAIChat
 
+from config import config
 from tools.skill_loader import run_skill
 
 
@@ -18,6 +20,7 @@ def save_report(markdown_content: str, session_id: str) -> str:
 report_drafter = Agent(
     name="Report Drafter",
     role="Final Report Generation",
+    model=OpenAIChat(id=config.OPENAI_MODEL, temperature=config.OPENAI_TEMPERATURE),
     description="Synthesizes the analysis into a client-ready markdown report.",
     tools=[run_skill, save_report],
     instructions=[

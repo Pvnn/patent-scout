@@ -2,7 +2,9 @@ import json
 from typing import List
 
 from agno.agent import Agent
+from agno.models.openai import OpenAIChat
 
+from config import config
 from tools.skill_loader import run_skill
 from tools.tool_dispatcher import run_tool
 
@@ -26,6 +28,7 @@ def call_patent_search_subprocess(
 patent_searcher = Agent(
     name="Patent Searcher",
     role="Prior Art Retrieval",
+    model=OpenAIChat(id=config.OPENAI_MODEL, temperature=config.OPENAI_TEMPERATURE),
     description="Queries the FAISS vector database to retrieve candidate patents.",
     tools=[run_skill, call_patent_search_subprocess],
     instructions=[
